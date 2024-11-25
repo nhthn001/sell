@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Sản phẩm</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+</head>
+<body>
+    <h1>Quản lý Sản phẩm</h1>
+    <a href="/">Trở về Trang Chủ</a>
+
+    <!-- Form thêm sản phẩm -->
+    <h2>Thêm sản phẩm mới</h2>
+    <form action="/products" method="post">
+        <input type="text" name="name" placeholder="Tên sản phẩm" required>
+        <input type="text" name="description" placeholder="Mô tả" required>
+        <input type="number" name="price" placeholder="Giá" required>
+        <input type="number" name="stock" placeholder="Tồn kho" required>
+        <button type="submit">Thêm</button>
+    </form>
+
+    <!-- Danh sách sản phẩm -->
+    <h2>Danh sách sản phẩm</h2>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Handle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Sử dụng Thymeleaf để render danh sách -->
+          <tr th:each="product : ${products}">
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.description}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.stock}"></td>
+            <td style="white-space: nowrap">
+                <!-- Sửa -->
+                <form th:action="@{/products/{id}(id=${product.id})}" method="post">
+                    <input type="hidden" name="_method" value="PUT" />
+                    <input type="text" name="name" th:value="${product.name}" />
+                    <input type="text" name="description" th:value="${product.description}" />
+                    <input type="number" name="price" th:value="${product.price}" />
+                    <input type="number" name="stock" th:value="${product.stock}" />
+                    <button type="submit" class="btn btn-primary btn-sm">Edit</button>
+                </form>
+                
+                
+                <!-- Xóa -->
+                <form th:action="@{/products/{id}(id=${product.id})}" method="post" onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">
+                    <input type="hidden" name="_method" value="DELETE" />
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>                
+            </td>
+        </tr>
+        </tbody>
+      </table>
+</body>
+</html>

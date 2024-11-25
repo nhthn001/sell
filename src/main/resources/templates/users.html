@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Người dùng</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <h1>Quản lý Người dùng</h1>
+    <a href="/">Trở về Trang Chủ</a>
+
+    <!-- Form thêm người dùng -->
+    <h2>Thêm người dùng mới</h2>
+    <form action="/users" method="post">
+        <input type="text" name="username" placeholder="Tên đăng nhập" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Mật khẩu" required>
+        <button type="submit">Thêm</button>
+    </form>
+
+    <!-- Danh sách người dùng -->
+    <h2>Danh sách Người dùng</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Tên đăng nhập</th>
+                <th>Email</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Render danh sách người dùng -->
+            <tr th:each="user : ${users}">
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.email}"></td>
+                <td>
+                    <!-- Form sửa -->
+                    <form th:action="@{'/users/' + ${user.id}}" method="post">
+                        <input type="hidden" name="_method" value="PUT">
+                        <input type="text" name="username" th:placeholder="${user.username}" required>
+                        <button type="submit">Sửa</button>
+                    </form>
+                    <!-- Form xóa -->
+                    <form th:action="@{'/users/' + ${user.id}}" method="post" style="display:inline;">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
